@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret_</title>
+</head>
+<body>
+    <h1>Sign up on Secret_</h1>
+    <%- include("partials/error.ejs") %>
+    <form action="/sign-user" method="post">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" value="<%= username %>" required>
+
+        <label for="firstName">Firstname</label>
+        <input type="text" name="firstname" id="firstname" value="<%= firstname %>" required>
+
+        <label for="lastname">Lastname</label>
+        <input type="text" name="lastname" id="lastname" value="<%= lastname %>" required>
+
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" value="<%= password %>" required>
+
+        <label for="c_password">Confirm password</label>
+        <input type="password" name="c_password" id="c_password" required>
+
+        <input type="submit" value="Sign Up">
+    </form>
+</body>
+</html>
