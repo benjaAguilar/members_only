@@ -8,6 +8,7 @@ const session = require('express-session');
 const passport = require('passport');
 const pool = require('./db/pool');
 
+const errorHandler = require('./controllers/errorHandler');
 const indexRouter = require('./routes/indexRoute');
 
 app.use(express.urlencoded({ extended: true }));
@@ -39,6 +40,8 @@ app.set("views", `${__dirname}/views`);
 app.set('view engine', 'ejs');
 
 app.use('/', indexRouter);
+
+app.use(errorHandler);
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`server running on ${PORT}`));
