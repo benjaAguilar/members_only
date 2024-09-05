@@ -8,13 +8,20 @@
 <body>
     <header>
         <span>Secret_</span>
-        <a href="/sign-up">Sign-up</a>
-        <a href="/log-in">Log-in</a>
+        <% if(!isAuth) { %>
+            <a href="/sign-up">Sign-up</a>
+            <a href="/log-in">Log-in</a>
+        <% } else { %>
+            <a href="/log-out">Log-out</a>
+        <%}%>
     </header>
     <h1>Secret_</h1>
+    <% if(currentUser) { %>
+        <p>Welcome Back @<%= currentUser.username %>!</p>
+    <%}%>
     <div>
         <img src="/media/icons/acc.svg" alt="">
-        <p>@Username</p>
+        <p><%= currentUser ? `@${currentUser.username}` : "@username" %></p>
         <form action="/post-msg" method="post">
             <textarea name="message" id="message" placeholder="What are you thinking?">
             </textarea>
