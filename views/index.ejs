@@ -15,18 +15,33 @@
             <a href="/log-out">Log-out</a>
         <%}%>
     </header>
-    <h1>Secret_</h1>
-    <% if(currentUser) { %>
-        <p>Welcome Back @<%= currentUser.username %>!</p>
-    <%}%>
-    <div>
-        <img src="/media/icons/acc.svg" alt="">
-        <p><%= currentUser ? `@${currentUser.username}` : "@username" %></p>
-        <form action="/post-msg" method="post">
-            <textarea name="message" id="message" placeholder="What are you thinking?">
-            </textarea>
-            <input type="submit" value="Post">
-        </form>
-    </div>
+    <main>
+        <h1>Secret_</h1>
+        <% if(currentUser) { %>
+            <h3>Welcome Back @<%= currentUser.username %>!</h3>
+        <%}%>
+        <nav>
+            <a href="/">Home</a>
+            <form action="/search" method="get">
+                <label for="search">Search</label>
+                <input type="text" name="search" id="search">
+                <input type="submit">
+            </form>
+            <% if(isAuth) { %>
+                <a href="/member">Become a member</a>
+                <a href="/admin">Become an admin</a>
+                <a href="/profile/<%= currentUser.username %>">Profile</a>
+            <% } %>
+        </nav>
+        <div>
+            <img src="/media/icons/acc.svg" alt="">
+            <p><%= currentUser ? `@${currentUser.username}` : "@username" %></p>
+            <form action="/post-msg" method="post">
+                <textarea name="message" id="message" placeholder="What are you thinking?">
+                </textarea>
+                <input type="submit" value="Post">
+            </form>
+        </div>
+    </main>
 </body>
 </html>
