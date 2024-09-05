@@ -27,8 +27,14 @@ function getLogIn(req, res, next){
     res.render('logIn');
 }
 
+function getMember(req, res){
+    res.render('member', { siteKey: process.env.CAPTCHA_SITE});
+}
+
+
 module.exports = {
     getIndex,
     getSignUp,
-    getLogIn
+    getLogIn,
+    getMember
 }
