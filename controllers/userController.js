@@ -1,30 +1,38 @@
 const { validationResult } = require("express-validator");
+const { tryCatch } = require('../utils/tryCatch');
 const validation = require('../config/validator');
+const bcrypt = require('bcryptjs');
+const db = require('../db/queries');
+const { customError } = require("../utils/customErrors");
 
 const postSingUser = [
     validation.validateCreateUser,
-    async (req, res) => {
-        const validationErrors = validationResult(req);
-        if(!validationErrors.isEmpty()){
-            res.status(400).render('signUp', {
-                username: req.body.username,
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
-                password: req.body.password,
-                errors: validationErrors.array(),
-            });
-            return;
-        }
+    tryCatch(
+        async (req, res, next) => {
+            const validationErrors = validationResult(req);
+            if(!validationErrors.isEmpty()){
+                res.status(400).render('signUp', {
+                    username: req.body.username,
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
+                    password: req.body.password,
+                    errors: validationErrors.array(),
+                });
+                return;
+            }
+    
+            const { username, firstname, lastname, password } = req.body;
+    
+            bcrypt.hash(password, 10, async (err, hashedPassword) => {
+                if(err) {
+                    return next(new customError('Internal server Error creating user, please try later', 500));
+                } 
+                
+                await db.createUser(username, firstname, lastname, hashedPassword);
 
-        const { username, firstname, lastname, password } = req.body;
-        console.log("🚀 ~ password:", password)
-        console.log("🚀 ~ lastname:", lastname)
-        console.log("🚀 ~ firstname:", firstname)
-        console.log("🚀 ~ username:", username)
-        
-        // await db.createUser(username, firstname, lastname, password)
-        res.render('logIn');
-    }
+                res.render('logIn');
+            });
+        })
 ]
 
 module.exports = {
