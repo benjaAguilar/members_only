@@ -1,4 +1,4 @@
-const { createUserError } = require("../utils/customErrors");
+const { customError } = require("../utils/customErrors");
 
 async function errorHandler(error, req, res, next){
     
@@ -6,8 +6,8 @@ async function errorHandler(error, req, res, next){
     console.log('------------------');
     console.log(error.message);
 
-    if(error instanceof createUserError){
-        res.status(500).render('index');
+    if(error instanceof customError){
+        res.status(error.statusCode).render('index');
         return;
     }
 
