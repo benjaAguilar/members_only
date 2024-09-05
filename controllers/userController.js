@@ -1,10 +1,13 @@
 const { validationResult } = require("express-validator");
+const { RecaptchaV2 } = require('express-recaptcha');
 const { tryCatch } = require('../utils/tryCatch');
 const validation = require('../config/validator');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const db = require('../db/queries');
 const { customError } = require("../utils/customErrors");
+
+const recaptcha = new RecaptchaV2(process.env.CAPTCHA_SITE, process.env.CAPTCHA_KEY);
 
 const postSingUser = [
     validation.validateCreateUser,
@@ -48,8 +51,24 @@ const getLogOutUser = (req, res, next) => {
     })
 }
 
+const postGiveMembership = [
+    recaptcha.middleware.verify,
+    tryCatch(
+        async (req, res, next) => {
+            if(req.body['g-recaptcha-response'].length === 0){
+                return next(new customError('Oh no! seems that you are a Robot!', 400));
+            }
+
+            // update db member to true 
+
+            res.render('index');
+        }
+    )
+]
+
 module.exports = {
     postSingUser,
     postLogUser,
-    getLogOutUser
+    getLogOutUser,
+    postGiveMembership
 }
