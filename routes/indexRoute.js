@@ -24,4 +24,6 @@ router.get('/member', tryCatch(indexController.getMember));
 
 router.post('/member', userController.postGiveMembership);
 
+router.post('/member-remove', userController.postRemoveMembership);
+
 module.exports = router;
