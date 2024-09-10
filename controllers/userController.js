@@ -59,17 +59,28 @@ const postGiveMembership = [
             if(req.recaptcha.error){
                 return next(new customError('Oh no! seems that you are a Robot!', 400));
             }
-            
-            // update db member to true 
+
+            // update db member to true
+            await db.toggleMembership(req.user.id, true);
 
             res.render('index');
         }
     )
 ]
 
+const postRemoveMembership = tryCatch(
+    async (req, res, next) => {
+        // update db member to false
+        await db.toggleMembership(req.user.id, false);
+
+        res.render('index');
+    }
+);
+
 module.exports = {
     postSingUser,
     postLogUser,
     getLogOutUser,
-    postGiveMembership
+    postGiveMembership,
+    postRemoveMembership
 }
