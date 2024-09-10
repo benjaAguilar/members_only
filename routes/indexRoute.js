@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const indexController = require('../controllers/indexController');
 const userController = require('../controllers/userController');
+const messageController = require('../controllers/messageController');
 const { tryCatch } = require('../utils/tryCatch');
 const router = Router();
 
@@ -32,5 +33,8 @@ router.get('/admin', tryCatch(indexController.getAdmin));
 router.post('/admin', userController.postGiveAdmin);
 
 router.post('/admin-remove', userController.postRemoveAdmin);
+
+//message
+router.post('/post-msg', messageController.postCreateMessage);
 
 module.exports = router;
