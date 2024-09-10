@@ -31,4 +31,6 @@ router.get('/admin', tryCatch(indexController.getAdmin));
 
 router.post('/admin', userController.postGiveAdmin);
 
+router.post('/admin-remove', userController.postRemoveAdmin);
+
 module.exports = router;
