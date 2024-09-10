@@ -55,10 +55,11 @@ const postGiveMembership = [
     recaptcha.middleware.verify,
     tryCatch(
         async (req, res, next) => {
-            if(req.body['g-recaptcha-response'].length === 0){
+
+            if(req.recaptcha.error){
                 return next(new customError('Oh no! seems that you are a Robot!', 400));
             }
-
+            
             // update db member to true 
 
             res.render('index');
