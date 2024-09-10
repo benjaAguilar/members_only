@@ -16,7 +16,16 @@ async function toggleMembership(id, bool){
         `, [id]);
 }
 
+async function toggleAdmin(id, bool){
+    await pool.query(`
+        UPDATE users
+        SET admin = ${bool}
+        WHERE id = $1
+        `, [id]);
+}
+
 module.exports = {
     createUser,
-    toggleMembership
+    toggleMembership,
+    toggleAdmin
 }
