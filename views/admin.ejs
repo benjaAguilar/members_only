@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret_</title>
+</head>
+<body>
+    <h1>Become an admin</h1>
+    <p>Guess the password and administrate Secret_ social media!</p>
+    <p><i>Hint: linux superuser?</i></p>
+    <%- include("partials/error.ejs") %>
+    <form action="/admin" method="post">
+        <label for="sudo">Sudo password</label>
+        <input type="password" name="sudo" id="sudo" required>
+        <input type="submit">
+    </form>
+</body>
+</html>
