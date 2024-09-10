@@ -55,7 +55,14 @@ const validateAdmin = [
         })
 ];
 
+const validateMessage = [
+    body('message').trim()
+        .isLength({min: 3, max: 300}).withMessage('message length must be between 3 and 300 characters')
+        .notEmpty().withMessage('The message is empty')
+]
+
 module.exports = {
     validateCreateUser,
-    validateAdmin
+    validateAdmin,
+    validateMessage
 }
