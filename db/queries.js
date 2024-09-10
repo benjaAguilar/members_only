@@ -24,8 +24,28 @@ async function toggleAdmin(id, bool){
         `, [id]);
 }
 
+async function createMessage(message, user_id) {
+    await pool.query(`
+        INSERT INTO messages
+        (message, user_id)
+        VALUES ($1, $2)
+        `, [message, user_id]);
+}
+
+async function getAllMessages(){
+    const {rows} = await pool.query(`
+                                SELECT messages.*, users.username  
+                                FROM messages
+                                INNER JOIN users
+                                ON messages.user_id = users.id
+                            `);
+    return rows;
+}
+
 module.exports = {
     createUser,
     toggleMembership,
-    toggleAdmin
+    toggleAdmin,
+    createMessage,
+    getAllMessages
 }
