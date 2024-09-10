@@ -26,4 +26,9 @@ router.post('/member', userController.postGiveMembership);
 
 router.post('/member-remove', userController.postRemoveMembership);
 
+//admin
+router.get('/admin', tryCatch(indexController.getAdmin));
+
+router.post('/admin', userController.postGiveAdmin);
+
 module.exports = router;
