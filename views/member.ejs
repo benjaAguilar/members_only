@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>Secret_</title>
+    <% if(locals.siteKey) { %>
     <script type="text/javascript">
       var onloadCallback = function() {
         grecaptcha.render('html_element', {
@@ -8,8 +9,11 @@
         });
       };
     </script>
+    <% } %>
   </head>
   <body>
+    <% if(locals.siteKey) { %>
+    <h2>Complete the captcha to become a member!</h2>
     <form action="/member" method="POST">
       <div id="html_element"></div>
       <br>
@@ -18,5 +22,11 @@
     <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
         async defer>
     </script>
+    <% } else { %>
+      <h2>You are a member!</h2>
+      <form action="/member-remove" method="POST">
+        <input type="submit" value="Remove Membership">
+      </form>
+    <% } %>
   </body>
 </html>
