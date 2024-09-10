@@ -58,8 +58,6 @@ const postGiveMembership = [
     recaptcha.middleware.verify,
     tryCatch(
         async (req, res, next) => {
-            console.log('//////////////////////////')
-            console.log(req.recaptcha.error);
             if(req.recaptcha.error){
                 return next(new customError('Oh no! seems that you are a Robot!', 400));
             }
@@ -83,10 +81,32 @@ const postRemoveMembership = tryCatch(
     }
 );
 
+const postGiveAdmin = [
+    validation.validateAdmin,
+    tryCatch(
+        async (req, res, next) => {
+            const validationErrors = validationResult(req);
+            if(!validationErrors.isEmpty()){
+                res.status(400).render('admin', {
+                    errors: validationErrors.array(),
+                });
+                return;
+            }
+        
+            //give admin permissions
+            await db.toggleAdmin(req.user.id, true);
+            req.session.feedback = 'You are now an admin!';
+        
+            res.redirect('/');
+        }
+    )
+]
+
 module.exports = {
     postSingUser,
     postLogUser,
     getLogOutUser,
     postGiveMembership,
-    postRemoveMembership
+    postRemoveMembership,
+    postGiveAdmin
 }
