@@ -100,7 +100,17 @@ const postGiveAdmin = [
             res.redirect('/');
         }
     )
-]
+];
+
+const postRemoveAdmin = tryCatch(
+    async (req, res, next) => {
+        // update db member to false
+        await db.toggleAdmin(req.user.id, false);
+        req.session.feedback = 'You are not an admin anymore';
+
+        res.redirect('/');
+    }
+);
 
 module.exports = {
     postSingUser,
@@ -108,5 +118,6 @@ module.exports = {
     getLogOutUser,
     postGiveMembership,
     postRemoveMembership,
-    postGiveAdmin
+    postGiveAdmin,
+    postRemoveAdmin
 }
