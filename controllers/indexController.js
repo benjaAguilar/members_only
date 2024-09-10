@@ -28,6 +28,14 @@ function getLogIn(req, res, next){
 }
 
 function getMember(req, res){
+    if(!req.isAuthenticated()){
+        return next(new customError(`You are not authenticated`, 400));
+    }
+
+    if(req.user.member){
+        return res.render('member');
+    }
+
     res.render('member', { siteKey: process.env.CAPTCHA_SITE});
 }
 
