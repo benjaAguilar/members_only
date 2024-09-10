@@ -33,7 +33,7 @@ function getLogIn(req, res, next){
     res.render('logIn', { feedback });
 }
 
-function getMember(req, res){
+function getMember(req, res, next){
     if(!req.isAuthenticated()){
         return next(new customError(`You are not authenticated`, 400));
     }
@@ -45,10 +45,22 @@ function getMember(req, res){
     res.render('member', { siteKey: process.env.CAPTCHA_SITE});
 }
 
+function getAdmin(req, res, next){
+    if(!req.isAuthenticated()){
+        return next(new customError(`You are not authenticated`, 400));
+    }
+
+    const feedback = req.session.feedback;
+    delete req.session.feedback;
+
+    res.render('admin', { feedback });
+}
+
 
 module.exports = {
     getIndex,
     getSignUp,
     getLogIn,
-    getMember
+    getMember,
+    getAdmin
 }
