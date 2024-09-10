@@ -5,14 +5,15 @@ async function errorHandler(error, req, res, next){
     console.log(error);
     console.log('------------------');
     console.log(error.message);
+    req.session.feedback = error.message;
 
     if(error instanceof loginError){
-        res.status(error.statusCode).render('logIn');
+        res.status(error.statusCode).redirect('/log-in');
         return;
     }
 
     if(error instanceof customError){
-        res.status(error.statusCode).render('index');
+        res.status(error.statusCode).redirect('/');
         return;
     }
 

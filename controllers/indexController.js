@@ -1,7 +1,10 @@
 const { customError } = require("../utils/customErrors");
 
 function getIndex(req, res){
-    res.render('index');
+    const feedback = req.session.feedback;
+    delete req.session.feedback;
+
+    res.render('index', { feedback });
 }
 
 function getSignUp(req, res, next){
@@ -22,9 +25,12 @@ function getSignUp(req, res, next){
 function getLogIn(req, res, next){
     if(req.isAuthenticated()){
         return next(new customError(`You are already authenticated as @${req.user.username}`, 400));
-    }  
+    }
+    
+    const feedback = req.session.feedback;
+    delete req.session.feedback;
 
-    res.render('logIn');
+    res.render('logIn', { feedback });
 }
 
 function getMember(req, res){

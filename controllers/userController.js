@@ -33,8 +33,9 @@ const postSingUser = [
                 } 
                 
                 await db.createUser(username, firstname, lastname, hashedPassword);
+                req.session.feedback = 'User created successfully!';
 
-                res.render('logIn');
+                res.redirect('/log-in');
             });
         })
 ]
@@ -47,6 +48,8 @@ const postLogUser = passport.authenticate("local", {
 const getLogOutUser = (req, res, next) => {
     req.logout((err) => {
         if(err) return next(new customError('Error logging Out, try again', 500));
+        req.session.feedback = 'Logged Out successfully';
+
         res.redirect('/');
     })
 }
@@ -55,15 +58,17 @@ const postGiveMembership = [
     recaptcha.middleware.verify,
     tryCatch(
         async (req, res, next) => {
-
+            console.log('//////////////////////////')
+            console.log(req.recaptcha.error);
             if(req.recaptcha.error){
                 return next(new customError('Oh no! seems that you are a Robot!', 400));
             }
 
             // update db member to true
             await db.toggleMembership(req.user.id, true);
+            req.session.feedback = 'You are now a Member!';
 
-            res.render('index');
+            res.redirect('/');
         }
     )
 ]
@@ -72,8 +77,9 @@ const postRemoveMembership = tryCatch(
     async (req, res, next) => {
         // update db member to false
         await db.toggleMembership(req.user.id, false);
+        req.session.feedback = 'You are not a member anymore';
 
-        res.render('index');
+        res.redirect('/');
     }
 );
 
