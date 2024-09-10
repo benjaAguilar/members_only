@@ -1,10 +1,13 @@
 const { customError } = require("../utils/customErrors");
+const db = require('../db/queries');
 
-function getIndex(req, res){
+async function getIndex(req, res){
     const feedback = req.session.feedback;
     delete req.session.feedback;
 
-    res.render('index', { feedback });
+    const messages = await db.getAllMessages();
+    
+    res.render('index', { feedback, messages });
 }
 
 function getSignUp(req, res, next){
