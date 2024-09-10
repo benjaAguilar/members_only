@@ -43,6 +43,19 @@ const validateCreateUser = [
         })
 ]
 
+const validateAdmin = [
+    body('sudo')
+        .custom(value => {
+            console.log(value);
+            console.log(process.env.ADMIN_PWD);
+            if(value !== process.env.ADMIN_PWD){
+                return Promise.reject('Incorrect admin password');
+            }
+            return true;
+        })
+];
+
 module.exports = {
     validateCreateUser,
+    validateAdmin
 }
