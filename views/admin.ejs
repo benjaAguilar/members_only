@@ -6,6 +6,7 @@
     <title>Secret_</title>
 </head>
 <body>
+    <% if(!locals.currentUser.admin) { %>
     <h1>Become an admin</h1>
     <p>Guess the password and administrate Secret_ social media!</p>
     <p><i>Hint: linux superuser?</i></p>
@@ -15,5 +16,11 @@
         <input type="password" name="sudo" id="sudo" required>
         <input type="submit">
     </form>
+    <% } else { %>
+        <h1>You are an admin!</h1>
+        <form action="/admin-remove" method="post">
+            <input type="submit" value="Remove admin">
+        </form>
+    <% } %>
 </body>
 </html>
