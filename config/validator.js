@@ -1,4 +1,5 @@
 const { body } = require("express-validator");
+const pool = require('../db/pool');
 
 const alphaErr = "must only contain letters.";
 const lengthErr = "must be between 4 and 20 characters.";
@@ -7,8 +8,14 @@ const validateCreateUser = [
     body('username').trim()
         .isAlpha().withMessage(`Username ${alphaErr}`)
         .isLength({min: 4, max: 20}).withMessage(`Username ${lengthErr}`)
+        .isLowercase().withMessage('Username must be lowercase')
         .notEmpty().withMessage('Username is required')
-        .toLowerCase(),
+        .custom(async (value) => {
+            const user = await pool.query('SELECT * FROM users WHERE username = $1', [value]);
+            if (user.rows.length > 0) {
+              return Promise.reject('User already exists');
+            }
+          }),
 
     body('firstname').trim()
         .isAlpha().withMessage(`Firstname ${alphaErr}`)
