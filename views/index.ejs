@@ -37,11 +37,25 @@
         <div>
             <img src="/media/icons/acc.svg" alt="">
             <p><%= currentUser ? `@${currentUser.username}` : "@username" %></p>
+            <%- include("partials/error.ejs") %>
             <form action="/post-msg" method="post">
-                <textarea name="message" id="message" placeholder="What are you thinking?">
+                <textarea name="message" id="message" placeholder="What are you thinking?" required>
                 </textarea>
                 <input type="submit" value="Post">
             </form>
+        </div>
+        <div>
+            <% if(locals.messages){ %>
+                    <% messages.forEach(msg => { %>
+                        <div>
+                            <img src="/media/icons/acc.svg" alt="">
+                            <p><%= currentUser ? `@${msg.username}` : '@Anonymous' %></p>
+                            <p><%= msg.message %></p>
+                            <p><%= msg.likes %></p>
+                            <p><%= msg.date %></p>
+                        </div>   
+                    <% }); %>
+                <% } %>
         </div>
     </main>
 </body>
