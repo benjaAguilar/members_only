@@ -8,6 +8,15 @@ async function createUser(username, firstname, lastname, password){
         `, [username, firstname, lastname, password]);
 }
 
+async function toggleMembership(id, bool){
+    await pool.query(`
+        UPDATE users
+        SET member = ${bool}
+        WHERE id = $1
+        `, [id]);
+}
+
 module.exports = {
     createUser,
+    toggleMembership
 }
