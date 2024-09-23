@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret_</title>
+</head>
+<body>
+    <main>
+        <div>
+            <img src="/media/icons/acc.svg" alt="">
+            <p><%= currentUser ? `@${currentUser.username}` : "@username" %></p>
+            <%- include("partials/error.ejs") %>
+            <form action="/post-comment" method="post">
+                <textarea name="message" id="message" placeholder="Comment" required>
+                </textarea>
+                <input type="submit" value="Comment">
+            </form>
+        </div>
+        <div>
+            <div>
+                <img src="/media/icons/acc.svg" alt="">
+                <p><%= currentUser ? `@${msg.username}` : '@Anonymous' %></p>
+                <p><%= msg.message %></p>
+                <p><%= msg.date %></p>
+            <div>
+                <div class="likes">
+                    <form action="<%= `/like-message/${msg.id}` %>" method="post">
+                        <input type="submit" value="Like">
+                    </form>
+                    <p><%= msg.likes %></p>
+                </div>
+            </div>
+            <% if(typeof currentUser !== 'undefined' && currentUser.admin) {%>
+                <form action="<%= `/delete-message/${msg.id}` %>" method="post">
+                    <input type="submit" value="delete">
+                </form>
+                <%}%>
+            </div>
+            <div>
+                <h2>Comments</h2>
+                <% comments.forEach(comment => { %>
+                    <div>
+                        <img src="/media/icons/acc.svg" alt="">
+                        <p><%= currentUser ? `@${comment.username}` : '@Anonymous' %></p>
+                        <p><%= comment.content %></p>
+                        <% if(typeof currentUser !== 'undefined' && currentUser.admin) {%>
+                            <form action="<%= `/delete-comment/${comment.id}` %>" method="post">
+                                <input type="submit" value="delete">
+                            </form>
+                            <%}%>
+                        </div>
+                        <% }) %>
+                    </div>
+        </div>
+    </main>
+</body>
+</html>
