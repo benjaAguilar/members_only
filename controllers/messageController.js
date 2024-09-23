@@ -72,9 +72,36 @@ const getComments = async (req, res, next) => {
     res.render('comments', {msg: message, comments: comments});
 }
 
+const postCreateComment = [
+    validateMessage,
+    tryCatch(
+        async (req, res, next) => {
+            if(!req.user){
+                return next(new customError('You are not authenticated', 400));
+            }
+
+            const validationErrors = validationResult(req);
+            if(!validationErrors.isEmpty()){
+                res.status(400).redirect(`/comments/message/${req.params.id}`);
+                return;
+            }
+
+            if(!req.user.member){
+                return next(new customError('You need to be a member to post messages', 400));
+            }
+
+            const { message } = req.body;
+            await db.insertComment(req.user.id, req.params.id, message);
+
+            res.redirect(`/comments/message/${req.params.id}`);
+        }
+    )
+]
+
 module.exports = {
     postCreateMessage,
     postDeleteMessage,
     postLikeMessage,
-    getComments
+    getComments,
+    postCreateComment
 }
