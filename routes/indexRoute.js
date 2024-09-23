@@ -45,4 +45,6 @@ router.get('/comments/message/:id', tryCatch(messageController.getComments));
 
 router.post('/comments/message/:id', messageController.postCreateComment);
 
+router.post('/message/:message_id/delete-comment/:id', tryCatch(messageController.postDeleteComment));
+
 module.exports = router;
