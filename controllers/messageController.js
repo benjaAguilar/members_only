@@ -59,7 +59,7 @@ const postLikeMessage = async (req, res, next) => {
     }
 
     await db.increaseLikes(req.params.id);
-    res.redirect('/');
+    res.redirect(`/comments/message/${req.params.id}`);
 }
 
 const getComments = async (req, res, next) => {
