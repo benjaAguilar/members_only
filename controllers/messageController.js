@@ -96,12 +96,28 @@ const postCreateComment = [
             res.redirect(`/comments/message/${req.params.id}`);
         }
     )
-]
+];
+
+const postDeleteComment = async (req, res, next) => {
+    if(!req.user){
+        return next(new customError('You are not authenticated', 400));
+    }
+
+    if(!req.user.admin){
+        return next(new customError('You are not an admin', 400));
+    }
+
+    const {message_id, id} = req.params;
+
+    await db.deleteComment(id);
+    res.redirect(`/comments/message/${message_id}`);
+}
 
 module.exports = {
     postCreateMessage,
     postDeleteMessage,
     postLikeMessage,
     getComments,
-    postCreateComment
+    postCreateComment,
+    postDeleteComment
 }
