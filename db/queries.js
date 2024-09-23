@@ -77,6 +77,14 @@ async function getMessageComments(id){
     return rows;
 }
 
+async function insertComment(user_id, message_id, content){
+    await pool.query(`
+            INSERT INTO comments
+            (user_id, message_id, content)
+            VALUES ($1, $2, $3)
+        `, [user_id, message_id, content]);
+}
+
 module.exports = {
     createUser,
     toggleMembership,
@@ -86,5 +94,6 @@ module.exports = {
     deleteMessage,
     increaseLikes,
     getMessageComments,
-    getMessage
+    getMessage,
+    insertComment
 }
