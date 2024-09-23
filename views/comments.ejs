@@ -8,34 +8,36 @@
 <body>
     <main>
         <div>
-            <img src="/media/icons/acc.svg" alt="">
-            <p><%= currentUser ? `@${currentUser.username}` : "@username" %></p>
-            <%- include("partials/error.ejs") %>
-            <form action="/post-comment" method="post">
-                <textarea name="message" id="message" placeholder="Comment" required>
-                </textarea>
-                <input type="submit" value="Comment">
-            </form>
-        </div>
-        <div>
             <div>
-                <img src="/media/icons/acc.svg" alt="">
-                <p><%= currentUser ? `@${msg.username}` : '@Anonymous' %></p>
-                <p><%= msg.message %></p>
-                <p><%= msg.date %></p>
-            <div>
-                <div class="likes">
-                    <form action="<%= `/like-message/${msg.id}` %>" method="post">
-                        <input type="submit" value="Like">
-                    </form>
-                    <p><%= msg.likes %></p>
+                <div>
+                    <img src="/media/icons/acc.svg" alt="">
+                    <p><%= currentUser ? `@${msg.username}` : '@Anonymous' %></p>
+                    <p><%= msg.message %></p>
+                    <p><%= msg.date %></p>
+                <div>
+                    <div class="likes">
+                        <form action="<%= `/like-message/${msg.id}` %>" method="post">
+                            <input type="submit" value="Like">
+                        </form>
+                        <p><%= msg.likes %></p>
+                    </div>
                 </div>
-            </div>
-            <% if(typeof currentUser !== 'undefined' && currentUser.admin) {%>
-                <form action="<%= `/delete-message/${msg.id}` %>" method="post">
-                    <input type="submit" value="delete">
-                </form>
-                <%}%>
+                <% if(typeof currentUser !== 'undefined' && currentUser.admin) {%>
+                    <form action="<%= `/delete-message/${msg.id}` %>" method="post">
+                        <input type="submit" value="delete">
+                    </form>
+                    <%}%>
+                </div>
+                <div>
+                    <img src="/media/icons/acc.svg" alt="">
+                    <p><%= currentUser ? `@${currentUser.username}` : "@username" %></p>
+                    <%- include("partials/error.ejs") %>
+                    <form action="<% `/comments/message/${msg.id}` %>" method="post">
+                        <textarea name="message" id="message" placeholder="Comment" required>
+                        </textarea>
+                        <input type="submit" value="Comment">
+                    </form>
+                </div>
             </div>
             <div>
                 <h2>Comments</h2>
