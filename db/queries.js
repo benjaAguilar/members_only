@@ -85,6 +85,13 @@ async function insertComment(user_id, message_id, content){
         `, [user_id, message_id, content]);
 }
 
+async function deleteComment(id){
+    await pool.query(`
+        DELETE FROM comments
+        WHERE id = $1
+        `, [id]);
+}
+
 module.exports = {
     createUser,
     toggleMembership,
@@ -95,5 +102,6 @@ module.exports = {
     increaseLikes,
     getMessageComments,
     getMessage,
-    insertComment
+    insertComment,
+    deleteComment
 }
