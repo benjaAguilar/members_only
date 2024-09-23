@@ -42,10 +42,49 @@ async function getAllMessages(){
     return rows;
 }
 
+async function getMessage(id) {
+    const {rows} = await pool.query(`
+        SELECT messages.*, users.username  
+        FROM messages
+        JOIN users ON messages.user_id = users.id
+        WHERE messages.id = $1
+    `, [id]);
+
+    return rows;
+}
+
+async function deleteMessage(id){
+    await pool.query(`
+            DELETE FROM messages
+            WHERE id = $1
+        `, [id]);
+}
+
+async function increaseLikes(id){
+    await pool.query(
+        `UPDATE messages SET likes = likes + 1                
+        WHERE id = $1
+        `, [id]);
+}
+
+async function getMessageComments(id){
+    const { rows } = await pool.query(`
+            SELECT comments.*, users.username FROM comments
+            JOIN users ON users.id = comments.user_id
+            WHERE message_id = $1
+        `, [id]);
+    
+    return rows;
+}
+
 module.exports = {
     createUser,
     toggleMembership,
     toggleAdmin,
     createMessage,
-    getAllMessages
+    getAllMessages,
+    deleteMessage,
+    increaseLikes,
+    getMessageComments,
+    getMessage
 }
