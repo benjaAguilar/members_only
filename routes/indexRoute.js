@@ -43,4 +43,6 @@ router.post('/like-message/:id', tryCatch(messageController.postLikeMessage));
 
 router.get('/comments/message/:id', tryCatch(messageController.getComments));
 
+router.post('/comments/message/:id', messageController.postCreateComment);
+
 module.exports = router;
