@@ -37,4 +37,10 @@ router.post('/admin-remove', userController.postRemoveAdmin);
 //message
 router.post('/post-msg', messageController.postCreateMessage);
 
+router.post('/delete-message/:id', tryCatch(messageController.postDeleteMessage));
+
+router.post('/like-message/:id', tryCatch(messageController.postLikeMessage));
+
+router.get('/comments/message/:id', tryCatch(messageController.getComments));
+
 module.exports = router;
