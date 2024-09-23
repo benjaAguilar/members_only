@@ -47,7 +47,7 @@
                         <p><%= currentUser ? `@${comment.username}` : '@Anonymous' %></p>
                         <p><%= comment.content %></p>
                         <% if(typeof currentUser !== 'undefined' && currentUser.admin) {%>
-                            <form action="<%= `/delete-comment/${comment.id}` %>" method="post">
+                            <form action="<%= `/message/${msg.id}/delete-comment/${comment.id}` %>" method="post">
                                 <input type="submit" value="delete">
                             </form>
                             <%}%>
