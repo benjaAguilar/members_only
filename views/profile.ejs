@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret_</title>
+</head>
+<body>
+    <main>
+        <section>
+            <div>
+                <img src="/media/icons/acc.svg" alt="">
+                <h2><%= user.username %></h2>
+                <p><%= `${user.firstname} ${user.lastname}` %></p>
+            </div>
+            <div>
+                <p>Member: <%= user.member %></p>
+                <p>Admin: <%= user.admin %></p>
+            </div>
+        </section>
+        <section>
+            <h2>Last Messages</h2>
+            <div>
+                <% if(locals.messages){ %>
+                    <% messages.forEach(msg => { %>
+                        <div>
+                            <img src="/media/icons/acc.svg" alt="">
+                            <p><%= currentUser ? `@${msg.username}` : '@Anonymous' %></p>
+                            <p><%= msg.message %></p>
+                            <p><%= msg.date %></p>
+                            <div>
+                                <div class="likes">
+                                    <form action="<%= `/like-message/${msg.id}` %>" method="post">
+                                        <input type="submit" value="Like">
+                                    </form>
+                                    <p><%= msg.likes %></p>
+                                </div>
+                                <a href="<%= `/comments/message/${msg.id}` %>">Comments</a>
+                            </div>
+                            <% if(typeof currentUser !== 'undefined' && currentUser.admin) {%>
+                            <form action="<%= `/delete-message/${msg.id}` %>" method="post">
+                                <input type="submit" value="delete">
+                            </form>
+                            <%}%>
+                        </div>   
+                    <% }); %>
+                <% } %>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
