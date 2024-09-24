@@ -59,11 +59,19 @@ function getAdmin(req, res, next){
     res.render('admin', { feedback });
 }
 
+const getMessageQuery = async (req, res, next) => {
+    const { search } = req.query;
+    const messages = await db.queryMessages(search);
+
+    res.render('search', {messages: messages});
+}
+
 
 module.exports = {
     getIndex,
     getSignUp,
     getLogIn,
     getMember,
-    getAdmin
+    getAdmin,
+    getMessageQuery
 }
