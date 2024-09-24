@@ -58,10 +58,15 @@ const postLikeMessage = async (req, res, next) => {
         return next(new customError('You are not a member', 400));
     }
 
+    const referer = req.get('referer');
     await db.increaseLikes(req.params.id);
-    res.redirect(`/comments/message/${req.params.id}`);
-}
 
+    if(referer.includes('/comments/message/')){
+        return res.redirect(`/comments/message/${req.params.id}`);
+    }
+
+    res.redirect('/');
+}
 const getComments = async (req, res, next) => {
 
     const results = await Promise.all([db.getMessage(req.params.id), db.getMessageComments(req.params.id)]);
