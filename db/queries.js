@@ -111,6 +111,16 @@ async function getUserProfileMessages(username){
     return rows;
 }
 
+async function queryMessages(query){
+    const { rows } = await pool.query(`
+            SELECT messages.*, users.username FROM messages
+            JOIN users ON messages.user_id = users.id
+            WHERE message LIKE $1
+        `, [`%${query}%`]);
+
+    return rows;
+}
+
 module.exports = {
     createUser,
     toggleMembership,
@@ -124,5 +134,6 @@ module.exports = {
     insertComment,
     deleteComment,
     getUser,
-    getUserProfileMessages
+    getUserProfileMessages,
+    queryMessages
 }
