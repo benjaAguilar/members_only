@@ -47,4 +47,7 @@ router.post('/comments/message/:id', messageController.postCreateComment);
 
 router.post('/message/:message_id/delete-comment/:id', tryCatch(messageController.postDeleteComment));
 
+//profile
+router.get('/profile/:user',  tryCatch(userController.getProfile));
+
 module.exports = router;
