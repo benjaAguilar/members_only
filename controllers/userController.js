@@ -112,6 +112,13 @@ const postRemoveAdmin = tryCatch(
     }
 );
 
+const getProfile = async (req, res, next) => {
+    const username = req.params.user;
+    const results = await Promise.all([db.getUser(username), db.getUserProfileMessages(username)]);
+    
+    res.render('profile', {user: results[0][0], messages: results[1]});
+}
+
 module.exports = {
     postSingUser,
     postLogUser,
@@ -119,5 +126,6 @@ module.exports = {
     postGiveMembership,
     postRemoveMembership,
     postGiveAdmin,
-    postRemoveAdmin
+    postRemoveAdmin,
+    getProfile
 }
