@@ -50,4 +50,7 @@ router.post('/message/:message_id/delete-comment/:id', tryCatch(messageControlle
 //profile
 router.get('/profile/:user',  tryCatch(userController.getProfile));
 
+//query
+router.get('/search', tryCatch(indexController.getMessageQuery));
+
 module.exports = router;
