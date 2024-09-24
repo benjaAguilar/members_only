@@ -61,18 +61,14 @@ const postLikeMessage = async (req, res, next) => {
     const referer = req.get('referer');
     await db.increaseLikes(req.params.id);
 
-    if(referer.includes('/comments/message/')){
-        return res.redirect(`/comments/message/${req.params.id}`);
-    }
-
-    res.redirect('/');
+    return res.redirect(referer);
 }
+
 const getComments = async (req, res, next) => {
 
     const results = await Promise.all([db.getMessage(req.params.id), db.getMessageComments(req.params.id)]);
     const message = results[0][0];
     const comments = results[1];
-    console.log("🚀 ~ getComments ~ comments:", comments)
     
     res.render('comments', {msg: message, comments: comments});
 }
