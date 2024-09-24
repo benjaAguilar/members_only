@@ -113,6 +113,14 @@ const postRemoveAdmin = tryCatch(
 );
 
 const getProfile = async (req, res, next) => {
+    if(!req.user){
+        return next(new customError('You are not authenticated', 400));
+    }
+
+    if(!req.user.member){
+        return next(new customError('You are not a member', 400));
+    }
+
     const username = req.params.user;
     const results = await Promise.all([db.getUser(username), db.getUserProfileMessages(username)]);
     
