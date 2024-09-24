@@ -44,7 +44,7 @@
                 <% comments.forEach(comment => { %>
                     <div>
                         <img src="/media/icons/acc.svg" alt="">
-                        <p><%= currentUser ? `@${comment.username}` : '@Anonymous' %></p>
+                        <a href="<%= `/profile/${msg.username}` %>"><%= currentUser ? `@${msg.username}` : '@Anonymous' %></a>
                         <p><%= comment.content %></p>
                         <% if(typeof currentUser !== 'undefined' && currentUser.admin) {%>
                             <form action="<%= `/message/${msg.id}/delete-comment/${comment.id}` %>" method="post">

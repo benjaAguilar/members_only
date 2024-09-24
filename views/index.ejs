@@ -49,7 +49,7 @@
                     <% messages.forEach(msg => { %>
                         <div>
                             <img src="/media/icons/acc.svg" alt="">
-                            <p><%= currentUser ? `@${msg.username}` : '@Anonymous' %></p>
+                            <a href="<%= `/profile/${msg.username}` %>"><%= currentUser ? `@${msg.username}` : '@Anonymous' %></a>
                             <p><%= msg.message %></p>
                             <p><%= msg.date %></p>
                             <div>
