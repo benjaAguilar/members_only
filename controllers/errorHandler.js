@@ -17,7 +17,7 @@ async function errorHandler(error, req, res, next){
         return;
     }
 
-    res.status(500).send('Server Error');
+    res.status(500).render('serverError', {status: 500, message: error.message});
 }
 
 module.exports = errorHandler;
