@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/indexMessages.css">
+    <link rel="stylesheet" href="/css/profile.css">
     <title>Secret_</title>
 </head>
 <body>
     <main>
-        <section>
-            <div>
+        <section class="user">
+            <div class="name">
                 <img src="/media/icons/acc.svg" alt="">
                 <h2><%= user.username %></h2>
                 <p><%= `${user.firstname} ${user.lastname}` %></p>
@@ -19,29 +22,31 @@
             </div>
         </section>
         <section>
-            <h2>Last Messages</h2>
-            <div>
+            <h2 style="margin-bottom: 1rem;">Last Messages</h2>
+            <div class="msg-container">
                 <% if(locals.messages){ %>
                     <% messages.forEach(msg => { %>
-                        <div>
+                        <div class="messages-card">
                             <img src="/media/icons/acc.svg" alt="">
-                            <p><%= currentUser ? `@${msg.username}` : '@Anonymous' %></p>
-                            <p><%= msg.message %></p>
-                            <p><%= msg.date %></p>
-                            <div>
-                                <div class="likes">
-                                    <form action="<%= `/like-message/${msg.id}` %>" method="post">
-                                        <input type="submit" value="Like">
-                                    </form>
-                                    <p><%= msg.likes %></p>
+                            <a href="<%= `/profile/${msg.username}` %>" class="name"><%= currentUser ? `@${msg.username}` : '@Anonymous' %></a>
+                            <p class="msg"><%= msg.message %></p>
+                            <p class="date"><%= msg.date %></p>
+                            <div class="opt">
+                                <div>
+                                    <div class="likes">
+                                        <form action="<%= `/like-message/${msg.id}` %>" method="post">
+                                            <input type="submit" value="Like">
+                                        </form>
+                                        <p><%= msg.likes %></p>
+                                    </div>
                                 </div>
                                 <a href="<%= `/comments/message/${msg.id}` %>">Comments</a>
+                                <% if(typeof currentUser !== 'undefined' && currentUser.admin) {%>
+                                    <form action="<%= `/delete-message/${msg.id}` %>" method="post">
+                                        <input type="submit" value="delete">
+                                    </form>
+                                <%}%>
                             </div>
-                            <% if(typeof currentUser !== 'undefined' && currentUser.admin) {%>
-                            <form action="<%= `/delete-message/${msg.id}` %>" method="post">
-                                <input type="submit" value="delete">
-                            </form>
-                            <%}%>
                         </div>   
                     <% }); %>
                 <% } %>

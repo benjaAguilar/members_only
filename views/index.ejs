@@ -3,40 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/indexMessages.css">
     <title>Secret_</title>
     <%- include("partials/feedbackMessage.ejs") %>
 </head>
 <body>
-    <header>
+    <header class="head">
         <span>Secret_</span>
-        <% if(!isAuth) { %>
-            <a href="/sign-up">Sign-up</a>
-            <a href="/log-in">Log-in</a>
-        <% } else { %>
-            <a href="/log-out">Log-out</a>
-        <%}%>
+        <div>
+            <% if(!isAuth) { %>
+                <a href="/sign-up">Sign-up</a>
+                <a href="/log-in">Log-in</a>
+            <% } else { %>
+                <a href="/log-out">Log-out</a>
+            <%}%>
+        </div>
     </header>
-    <main>
-        <h1>Secret_</h1>
+    <section class="dashboard">
         <% if(currentUser) { %>
             <h3>Welcome Back @<%= currentUser.username %>!</h3>
         <%}%>
+        <form action="/search" method="get" class="searchBar">
+            <label for="search"><img src="/media/icons/search.svg" alt="" class="icons"></label>
+            <input type="text" name="search" id="search">
+            <input type="submit" value="Search" class="btn">
+        </form>
         <nav>
-            <a href="/">Home</a>
-            <form action="/search" method="get">
-                <label for="search">Search</label>
-                <input type="text" name="search" id="search">
-                <input type="submit">
-            </form>
+            <a href="/"><img src="/media/icons/home.svg" alt="" class="icons"> Home<span>_</span></a>
             <% if(isAuth) { %>
-                <a href="/member">Become a member</a>
-                <a href="/admin">Become an admin</a>
-                <a href="/profile/<%= currentUser.username %>">Profile</a>
+                <a href="/member"><img src="/media/icons/member.svg" alt="" class="icons"> Become a member<span>_</span></a>
+                <a href="/admin"><img src="/media/icons/admin.svg" alt="" class="icons"> Become an admin<span>_</span></a>
+                <a href="/profile/<%= currentUser.username %>"><img src="/media/icons/acc.svg" alt="" class="icons"> Profile<span>_</span></a>
             <% } %>
         </nav>
-        <div>
-            <img src="/media/icons/acc.svg" alt="">
-            <p><%= currentUser ? `@${currentUser.username}` : "@username" %></p>
+    </section>
+    <main class="main">
+        <div class="create-message">
+            <div class="usr">
+                <img src="/media/icons/acc.svg" alt="">
+                <p><%= currentUser ? `@${currentUser.username}` : "@username" %></p>
+            </div>
             <%- include("partials/error.ejs") %>
             <form action="/post-msg" method="post">
                 <textarea name="message" id="message" placeholder="What are you thinking?" required>
@@ -44,28 +52,30 @@
                 <input type="submit" value="Post">
             </form>
         </div>
-        <div>
+        <div class="msg-container">
             <% if(locals.messages){ %>
                     <% messages.forEach(msg => { %>
-                        <div>
+                        <div class="messages-card">
                             <img src="/media/icons/acc.svg" alt="">
-                            <a href="<%= `/profile/${msg.username}` %>"><%= currentUser ? `@${msg.username}` : '@Anonymous' %></a>
-                            <p><%= msg.message %></p>
-                            <p><%= msg.date %></p>
-                            <div>
-                                <div class="likes">
-                                    <form action="<%= `/like-message/${msg.id}` %>" method="post">
-                                        <input type="submit" value="Like">
-                                    </form>
-                                    <p><%= msg.likes %></p>
+                            <a href="<%= `/profile/${msg.username}` %>" class="name"><%= currentUser ? `@${msg.username}` : '@Anonymous' %></a>
+                            <p class="msg"><%= msg.message %></p>
+                            <p class="date"><%= msg.date %></p>
+                            <div class="opt">
+                                <div>
+                                    <div class="likes">
+                                        <form action="<%= `/like-message/${msg.id}` %>" method="post">
+                                            <input type="submit" value="Like">
+                                        </form>
+                                        <p><%= msg.likes %></p>
+                                    </div>
                                 </div>
                                 <a href="<%= `/comments/message/${msg.id}` %>">Comments</a>
+                                <% if(typeof currentUser !== 'undefined' && currentUser.admin) {%>
+                                    <form action="<%= `/delete-message/${msg.id}` %>" method="post">
+                                        <input type="submit" value="delete">
+                                    </form>
+                                <%}%>
                             </div>
-                            <% if(typeof currentUser !== 'undefined' && currentUser.admin) {%>
-                            <form action="<%= `/delete-message/${msg.id}` %>" method="post">
-                                <input type="submit" value="delete">
-                            </form>
-                            <%}%>
                         </div>   
                     <% }); %>
                 <% } %>

@@ -3,34 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/indexMessages.css">
+    <link rel="stylesheet" href="/css/profile.css">
     <title>Secret_</title>
 </head>
 <body>
     <main>
-        <h1>Search results</h1>
-        <div>
+        <h1 style="margin-bottom: 1rem;">Search results</h1>
+        <div class="msg-container">
             <% if(locals.messages){ %>
                 <% messages.forEach(msg => { %>
-                    <div>
+                    <div class="messages-card">
                         <img src="/media/icons/acc.svg" alt="">
-                        <p><%= currentUser ? `@${msg.username}` : '@Anonymous' %></p>
-                        <p><%= msg.message %></p>
-                        <p><%= msg.date %></p>
-                        <div>
-                            <div class="likes">
-                                <form action="<%= `/like-message/${msg.id}` %>" method="post">
-                                    <input type="submit" value="Like">
-                                </form>
-                                <p><%= msg.likes %></p>
+                        <a href="<%= `/profile/${msg.username}` %>" class="name"><%= currentUser ? `@${msg.username}` : '@Anonymous' %></a>
+                        <p class="msg"><%= msg.message %></p>
+                        <p class="date"><%= msg.date %></p>
+                        <div class="opt">
+                            <div>
+                                <div class="likes">
+                                    <form action="<%= `/like-message/${msg.id}` %>" method="post">
+                                        <input type="submit" value="Like">
+                                    </form>
+                                    <p><%= msg.likes %></p>
+                                </div>
                             </div>
                             <a href="<%= `/comments/message/${msg.id}` %>">Comments</a>
+                            <% if(typeof currentUser !== 'undefined' && currentUser.admin) {%>
+                                <form action="<%= `/delete-message/${msg.id}` %>" method="post">
+                                    <input type="submit" value="delete">
+                                </form>
+                            <%}%>
                         </div>
-                        <% if(typeof currentUser !== 'undefined' && currentUser.admin) {%>
-                        <form action="<%= `/delete-message/${msg.id}` %>" method="post">
-                            <input type="submit" value="delete">
-                        </form>
-                        <%}%>
-                    </div>   
+                    </div>  
                 <% }); %>
             <% } %>
         </div>
