@@ -1,0 +1,16 @@
+body{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+input[type=submit]{
+    cursor: pointer;
+}
+
+input[type=submit]:hover{
+    background-color: #e2e8f0;
+    color: #151515;
+}
