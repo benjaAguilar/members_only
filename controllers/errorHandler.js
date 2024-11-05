@@ -5,7 +5,9 @@ async function errorHandler(error, req, res, next){
     console.log(error);
     console.log('------------------');
     console.log(error.message);
-    req.session.feedback = error.message;
+    if(req.session){
+        req.session.feedback = error.message;
+    }
 
     if(error instanceof loginError){
         res.status(error.statusCode).redirect('/log-in');
